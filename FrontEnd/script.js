@@ -4,23 +4,44 @@ let works =[];
 
 async function afficherWorks() {
   const reponse = await fetch("http://localhost:5678/api/works");
-    works = await reponse.json();
+  works = await reponse.json();
   console.log(works);
+  genererImages(works);
 }
 
 afficherWorks();
 
-const doubles = works.map(work => {
-    console.log("test");
-  return work.id;
-});
-console.log(doubles);
+function genererImages(works){
 
-const nombres = [1, 2, 3, 4, 5];
+  const divImages = document.querySelector(".gallery");
 
-const double = nombres.map(nombre => {
-  return nombre * 2;
-});
+  for(let i = 0 ; i < works.length ; i++){
+    const projet =  works[i];
 
-console.log(double);
+    const worksElement = document.createElement("figure");
+
+    const imagesElement = document.createElement("img");
+    imagesElement.src = projet.imageUrl;
+    const nomElement = document.createElement("figcaption");
+    nomElement.innerText = projet.title;
+
+    divImages.appendChild(worksElement);
+    worksElement.appendChild(imagesElement);
+    worksElement.appendChild(nomElement);
+    console.log(projet.imageUrl);
+
+  }
+}
+
+let categories =[];
+
+async function afficherCategories() {
+  const reponse = await fetch("http://localhost:5678/api/works");
+  categories = await reponse.json();
+  console.log(categories);
+
+}
+afficherWorks();
+
+
 

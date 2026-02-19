@@ -6,16 +6,27 @@ async function afficherWorks() {
   const reponse = await fetch("http://localhost:5678/api/works");
   works = await reponse.json();
   console.log(works);
-  genererImages(works);
+  genererGalerie(works);
+
+
+  let categoriesArray = new Set();
+  works.forEach(works => {
+    if (works.category){
+      categoriesArray.add(JSON.stringify(works.category));
+    }
+  })
+  const categories =Array.from(categoriesArray).map(cat => JSON.parse(cat));
+  console.log(categories);
+
+  genererBoutons(categories)
 }
 
 afficherWorks();
 
-function genererImages(works){
-
+function genererGalerie(works){
   const divImages = document.querySelector(".gallery");
 
-  for(let i = 0 ; i < works.length ; i++){
+  for(let i = 0; i < works.length ; i++){
     const projet =  works[i];
 
     const worksElement = document.createElement("figure");
@@ -28,20 +39,26 @@ function genererImages(works){
     divImages.appendChild(worksElement);
     worksElement.appendChild(imagesElement);
     worksElement.appendChild(nomElement);
-    console.log(projet.imageUrl);
+
 
   }
 }
 
-let categories =[];
+function genererBoutons(categories){
+  const divButtons = document.querySelector(".btn");
 
-async function afficherCategories() {
-  const reponse = await fetch("http://localhost:5678/api/works");
-  categories = await reponse.json();
-  console.log(categories);
+  for(let i = 0; i < categories.length; i++ ){
+    const button = categories[i];
 
+    const buttonEl = document.createElement("button");
+    buttonEl.className = "btn";
+    //buttonEl.setAttribute("type", "button");
+    buttonEl.innerText = categories[i].name;
+
+    divButtons.appendChild(buttonEl);
+
+  }
 }
-afficherWorks();
 
 
 

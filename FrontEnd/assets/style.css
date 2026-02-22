@@ -193,4 +193,9 @@ footer nav ul {
 	gap: 20px;
 	margin-bottom: 30px;
 }
+.btnCategories{
+	border-radius: 60px ;
+	background-color: #1D6154;
+	color: white;
+}
 

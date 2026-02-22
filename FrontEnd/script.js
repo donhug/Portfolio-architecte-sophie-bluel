@@ -19,7 +19,8 @@ async function afficherWorks() {
   const categories =Array.from(categoriesArray).map(cat => JSON.parse(cat));
   console.log(categories);
 
-  genererBoutons(categories)
+  genererBoutons(categories);
+
 
 
 }
@@ -57,6 +58,8 @@ function genererBoutons(categories){
   divButtons.appendChild(buttonAll);
   buttonAll.addEventListener("click", function(){
     console.log("Tous");
+    document.querySelector(".gallery").innerHTML = "";
+    genererGalerie(works)
   })
 
   for(let i = 0; i < categories.length; i++ ){
@@ -66,8 +69,8 @@ function genererBoutons(categories){
     buttonCat.innerText = categories[i].name;
 
     divButtons.appendChild(buttonCat);
-
     boutonTrie(buttonCat,categories[i], works);
+
   }
 }
 
@@ -76,5 +79,8 @@ function boutonTrie(button,category, works){
     console.log("ID => "+category.id+" /nom =>"+category.name );
     const worksTrie = works.filter(works => works.categoryId === category.id);
     worksTrie.forEach(works => console.log("(TITRE) = "+works.title + " (catégorie) = "+works.categoryId));
+    document.querySelector(".gallery").innerHTML = "";
+    genererGalerie(worksTrie)
   })
+
 }

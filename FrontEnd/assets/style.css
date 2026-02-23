@@ -199,3 +199,56 @@ footer nav ul {
 	color: white;
 }
 
+/*PAGE LOGIN*/
+
+.logindex{
+	text-decoration: none;
+	color: #000000;
+}
+.logindex:hover {
+	color: #B1663C;
+}
+.log{
+	font-weight: bold;
+}
+.login {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	margin-top: 180px;
+}
+.title {
+	padding-bottom: 30px;
+}
+form{
+	display:flex;
+	flex-direction: column;
+}
+.pass{
+	margin-bottom: 30px;
+	margin-top:10px;
+	border: none;
+	background-color: white;
+	box-shadow: 0px 4px 14px 0px #00000017;
+	padding: 15px 100px 15px 100px;
+	text-align: center;
+}
+
+#btn{
+	border:1px solid #1D6154;
+	color:white;
+	background-color:#1D6154;
+	border-radius:60px;
+	width:180px;
+	height:36px;
+	text-align:center;
+
+}
+
+.forgot{
+	margin-top:150px;
+	color: #000000;
+	margin-left:120px;
+}
+

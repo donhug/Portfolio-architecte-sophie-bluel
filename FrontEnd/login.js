@@ -1,23 +1,37 @@
 console.log("test");
 
-function identificationLogin(){
+ function identificationLogin(){
     const envoi = document.querySelector(".login-form")
 
-    envoi.addEventListener("submit", function(event){
+    envoi.addEventListener("submit", async function(event){
         event.preventDefault();
         const infoLogin = {
             email : event.target.querySelector("[name=email]").value,
             password : event.target.querySelector("[name=password]").value,
         }
-        //À ENLEVER !!! quand le login est fini
-        console.log(infoLogin);
 
         const chargeUtile = JSON.stringify(infoLogin);
-        fetch("http://localhost:5678/api/users/login",{
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: chargeUtile
-        });
+        try {
+            let response = await fetch("http://localhost:5678/api/users/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: chargeUtile
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log("Token reçu :", data.token);
+                localStorage.setItem("token", data.token);
+                window.location.href = "index.html";
+            } else {
+                let faux = document.querySelector(".faux");
+                faux.style.display = "block";
+                console.log("Erreur de connexion :", response.status);
+            }
+
+        } catch (error) {
+            console.log("Erreur réseau :", error);
+        }
     })
 }
 identificationLogin()

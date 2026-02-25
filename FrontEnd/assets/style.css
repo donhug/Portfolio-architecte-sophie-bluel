@@ -252,3 +252,12 @@ form{
 	margin-left:120px;
 }
 
+.faux{
+	background:red;
+	text-align:center;
+	padding:30px;
+	border-radius:20px;
+	margin-top: 30px;
+	display: none;
+}
+

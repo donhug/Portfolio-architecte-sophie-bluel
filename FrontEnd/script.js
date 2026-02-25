@@ -1,6 +1,9 @@
 console.log("Hello World!");
 
 let works =[];
+const divImages = document.querySelector(".gallery");
+const divButtons = document.querySelector(".btn");
+const token = localStorage.getItem("token");
 
 //récupere les images + titres
 async function afficherWorks() {
@@ -21,21 +24,17 @@ async function afficherWorks() {
 
   genererBoutons(categories);
 
-
-
 }
-
+genererBoutonsAdmin()
 afficherWorks();
 
 // genère la gallerie dans la DIV gallery et crée les éléments pour les images + titres
 function genererGalerie(works){
-  const divImages = document.querySelector(".gallery");
 
   for(let i = 0; i < works.length ; i++){
     const projet =  works[i];
 
     const worksElement = document.createElement("figure");
-
     const imagesElement = document.createElement("img");
     imagesElement.src = projet.imageUrl;
     const nomElement = document.createElement("figcaption");
@@ -44,13 +43,10 @@ function genererGalerie(works){
     divImages.appendChild(worksElement);
     worksElement.appendChild(imagesElement);
     worksElement.appendChild(nomElement);
-
-
   }
 }
 // genère les boutons
 function genererBoutons(categories){
-  const divButtons = document.querySelector(".btn");
 
   const buttonAll = document.createElement("button");
   buttonAll.className = "btnCategories";
@@ -70,7 +66,6 @@ function genererBoutons(categories){
 
     divButtons.appendChild(buttonCat);
     boutonTrie(buttonCat,categories[i], works);
-
   }
 }
 //trie les images en fonction de leurs catégories
@@ -82,5 +77,10 @@ function boutonTrie(button,category, works){
     document.querySelector(".gallery").innerHTML = "";
     genererGalerie(worksTrie)
   })
+}
 
+function genererBoutonsAdmin(){
+  if(!token){
+  }
+  divButtons.style.display = "none";
 }

@@ -27,7 +27,7 @@ async function afficherWorks() {
 
 afficherWorks();
 
-
+// genère la gallerie dans la DIV gallery et crée les éléments pour les images + titres
 function genererGalerie(works){
   const divImages = document.querySelector(".gallery");
 
@@ -48,7 +48,7 @@ function genererGalerie(works){
 
   }
 }
-
+// genère les boutons
 function genererBoutons(categories){
   const divButtons = document.querySelector(".btn");
 
@@ -73,7 +73,7 @@ function genererBoutons(categories){
 
   }
 }
-
+//trie les images en fonction de leurs catégories
 function boutonTrie(button,category, works){
   button.addEventListener("click", function(){
     console.log("ID => "+category.id+" /nom =>"+category.name );

@@ -5,6 +5,13 @@ const divImages = document.querySelector(".gallery");
 const divButtons = document.querySelector(".btn");
 const token = localStorage.getItem("token");
 
+
+afficherWorks();
+suprimerBoutons();
+bandeauAdmin();
+deconnexion();
+log()
+
 //récupere les images + titres
 async function afficherWorks() {
   const reponse = await fetch("http://localhost:5678/api/works");
@@ -25,8 +32,7 @@ async function afficherWorks() {
   genererBoutons(categories);
 
 }
-genererBoutonsAdmin()
-afficherWorks();
+
 
 // genère la gallerie dans la DIV gallery et crée les éléments pour les images + titres
 function genererGalerie(works){
@@ -79,8 +85,34 @@ function boutonTrie(button,category, works){
   })
 }
 
-function genererBoutonsAdmin(){
-  if(!token){
+function suprimerBoutons(){
+  if(token){
+    divButtons.style.display = "none";
   }
-  divButtons.style.display = "none";
 }
+
+function bandeauAdmin(){
+  const bandeau = document.querySelector(".adminEdi");
+  if(token){
+    bandeau.style.display = "block";
+  }
+}
+
+
+function log(){
+  const logout = document.querySelector(".logoutindex")
+  const login = document.querySelector(".logindex")
+  if(token){
+    login.style.display = "none";
+    logout.style.display = "block";
+  }
+}
+
+function deconnexion(){
+  const logout = document.querySelector(".logoutindex")
+  logout.addEventListener("click", async function(){
+    localStorage.removeItem("token");
+    window.location.reload();
+  })
+}
+

@@ -261,3 +261,18 @@ form{
 	display: none;
 }
 
+/*MODE ADMIN*/
+
+.logoutindex{
+	display: none;
+}
+.adminEdi{
+	display:none;
+	background-color:black;
+	color: white;
+	padding:20px;
+	text-align:center;
+	margin-left: calc(50% - 50vw);
+	margin-right: calc( 50% - 50vw);
+}
+

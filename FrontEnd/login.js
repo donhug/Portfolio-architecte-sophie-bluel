@@ -26,6 +26,9 @@ console.log("test");
             } else {
                 let faux = document.querySelector(".faux");
                 faux.style.display = "block";
+                setTimeout(function() {
+                    faux.style.display = "none";
+                },5000);
                 console.log("Erreur de connexion :", response.status);
             }
 
@@ -34,4 +37,4 @@ console.log("test");
         }
     })
 }
-identificationLogin()
+identificationLogin();

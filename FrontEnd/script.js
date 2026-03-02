@@ -2,15 +2,16 @@ console.log("Hello World!");
 
 let works =[];
 const divImages = document.querySelector(".gallery");
+const modaleImages = document.querySelector(".modaleGallery");
 const divButtons = document.querySelector(".btn");
 const token = localStorage.getItem("token");
-
+const modifictaion = document.querySelector(".btnModifier");
 
 afficherWorks();
 suprimerBoutons();
-bandeauAdmin();
 deconnexion();
-log()
+afficheModale()
+
 
 //récupere les images + titres
 async function afficherWorks() {
@@ -18,6 +19,7 @@ async function afficherWorks() {
   works = await reponse.json();
   console.log(works);
   genererGalerie(works);
+  galerieModale(works)
 
 //récupere les 3 catégories
   let categoriesArray = new Set();
@@ -86,25 +88,20 @@ function boutonTrie(button,category, works){
 }
 
 function suprimerBoutons(){
-  if(token){
-    divButtons.style.display = "none";
-  }
-}
-
-function bandeauAdmin(){
   const bandeau = document.querySelector(".adminEdi");
-  if(token){
-    bandeau.style.display = "block";
-  }
-}
-
-
-function log(){
   const logout = document.querySelector(".logoutindex")
   const login = document.querySelector(".logindex")
+  const adminIcone = document.querySelector(".adminIcone");
+  const btnModifier = document.querySelector(".btnModifier");
   if(token){
+    divButtons.style.display = "none";
+    bandeau.style.display = "block";
     login.style.display = "none";
     logout.style.display = "block";
+
+  }else{
+    adminIcone.style.display = "none";
+    btnModifier.style.display = "none";
   }
 }
 
@@ -116,3 +113,32 @@ function deconnexion(){
   })
 }
 
+function galerieModale(works){
+  for(let i = 0; i < works.length ; i++){
+    const projet =  works[i];
+
+    const worksElement = document.createElement("figure");
+    const imagesElement = document.createElement("img");
+    imagesElement.src = projet.imageUrl;
+
+    modaleImages.appendChild(worksElement);
+    worksElement.appendChild(imagesElement);
+
+  }
+}
+
+function afficheModale(){
+  const overlay = document.querySelector(".overlay");
+  const modale = document.querySelector(".modale");
+
+  modifictaion.addEventListener("click", async function(){
+    overlay.style.display = "block";
+    modale.style.display = "block";
+  })
+
+  const fermeModale = document.querySelector(".modaleClose");
+  fermeModale.addEventListener("click", async function(){
+    overlay.style.display = "none";
+    modale.style.display = "none";
+  })
+}

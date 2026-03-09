@@ -12,6 +12,7 @@ afficherWorks();
 suprimerBoutons();
 deconnexion();
 afficheModale();
+ajoutPhoto();
 
 //récupere les images + titres
 async function afficherWorks() {
@@ -32,7 +33,7 @@ async function afficherWorks() {
   const categories =Array.from(categoriesArray).map(cat => JSON.parse(cat));
   console.log(categories);
   genererBoutons(categories);
-  ajouterPhoto(categories)
+  listeCat(categories)
 
   document.querySelector(".modaleGallery").innerHTML = "";
   document.querySelector(".gallery").innerHTML = "";
@@ -205,18 +206,6 @@ async function deleteWork(id) {
 }
 
 //
-function ajouterPhoto(categories){
-  const selectCat = document.querySelector("#categorie");
-
-  categories.forEach(cat => {
-    const option = document.createElement("option");
-    option.value = cat.id;
-    option.textContent = cat.name;
-    selectCat.appendChild(option);
-  });
-}
-
-//
 function boutonSuppression(){
   const boutonSup = document.querySelectorAll(".iconeSup");
 
@@ -229,6 +218,52 @@ function boutonSuppression(){
         await deleteWork(idBtnSup);
       }
     })
+  })
+}
+
+//
+function listeCat(categories){
+  const selectCat = document.querySelector("#categorie");
+
+  selectCat.innerHTML = "";
+  categories.forEach(cat => {
+    const option = document.createElement("option");
+    option.value = cat.id;
+    option.textContent = cat.name;
+    selectCat.appendChild(option);
+  });
+
+}
+//
+function ajoutPhoto(){
+  const form = document.querySelector("#formulaireAjout");
+  const nouveau = document.querySelector("#validerApi");
+  nouveau.addEventListener("click", async function(){
+
+    //gestion de l'envoi de l'image + titre + catégorie
+    const nouvelleImage = new FormData();
+      nouvelleImage.append("image",document.querySelector("#photo").files[0]);
+      nouvelleImage.append("title",document.querySelector("#title").value);
+      nouvelleImage.append("category",document.querySelector("#categorie").value);
+
+
+    try {
+      const reponse = await fetch("http://localhost:5678/api/works/",{
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`
+        },
+        body:nouvelleImage
+      });
+
+      if (!reponse.ok) {
+        throw new Error(`Statut de réponse : ${reponse.status}`);
+      }
+      form.reset();
+      await afficherWorks();
+    } catch (erreur) {
+      console.error(erreur.message);
+    }
   })
 }
 

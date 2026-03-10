@@ -194,9 +194,13 @@ footer nav ul {
 	margin-bottom: 30px;
 }
 .btnCategories{
-	border-radius: 60px ;
-	background-color: #1D6154;
-	color: white;
+	font-family: 'Syne';
+	border-radius: 60px;
+	color: #1D6154;
+	height: 40px;
+	width: 165px;
+	border: solid #1D6154 2px;
+	background-color: white;
 }
 
 /*PAGE LOGIN*/
@@ -370,6 +374,7 @@ section, .galleryBox{
 	margin: 20px 0;
 }
 .btnAjout{
+	font-family: 'Syne';
 	border:1px solid #1D6154;
 	color:white;
 	background-color:#1D6154;
@@ -387,6 +392,63 @@ section, .galleryBox{
 	justify-content: space-between;
 }
 
-.formAjout form {
-	background-color: #1D6154;
+.return{
+	background-color: transparent;
+	border: none;
+}
+.formAjout{
+	margin:0 auto;
+}
+#photo{
+	display: none;
+}
+
+.zoneAJout{
+	display: flex;
+	text-align: center;
+	align-items: center;
+	justify-content: center;
+	background-color: #E8F1F6;
+	height: 180px;
+	cursor: pointer;
+	flex-direction: column;
+	gap:10px;
+}
+.logo{
+	font-size: 80px;
+	color: #B9C5CC;
+}
+.photoCustom{
+	border-radius: 20px;
+	background-color: #CBD6DC;
+	color: #306685;
+	padding: 10px;
+	cursor: pointer;
+	width: 170px;
+}
+
+.format{
+	color:#444444;
+	font-size:10px;
+}
+#formulaireAjout{
+	gap: 20px;
+}
+.formAjout input{
+	height: 50px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	color: #444444;
+}
+
+#formulaireAjout select{
+	height: 50px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	background-color: white;
+	color: #444444;
+	margin-bottom: 30px;
+	padding: 10px;
 }

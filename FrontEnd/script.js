@@ -13,13 +13,12 @@ suprimerBoutons();
 deconnexion();
 afficheModale();
 ajoutPhoto();
-
+listeCat()
 //récupere les images + titres
 async function afficherWorks() {
   const reponse = await fetch("http://localhost:5678/api/works");
   works = await reponse.json();
   console.log(works);
-
   genererGalerie(works);
   galerieModale(works)
 
@@ -33,7 +32,7 @@ async function afficherWorks() {
   const categories =Array.from(categoriesArray).map(cat => JSON.parse(cat));
   console.log(categories);
   genererBoutons(categories);
-  listeCat(categories)
+
 
   document.querySelector(".modaleGallery").innerHTML = "";
   document.querySelector(".gallery").innerHTML = "";
@@ -80,6 +79,7 @@ function genererBoutons(categories){
     divButtons.appendChild(buttonCat);
     boutonTrie(buttonCat,categories[i], works);
   }
+  couleurBtn()
 }
 
 //trie les images en fonction de leurs catégories
@@ -93,7 +93,22 @@ function boutonTrie(button,category, works){
   })
 }
 
-//
+//change la couleur des boutons au clic
+function couleurBtn(){
+  let boutons = document.querySelectorAll(".btnCategories")
+  boutons.forEach(function (bouton){
+    bouton.addEventListener("click", function(){
+      boutons.forEach(b =>{
+        b.style.backgroundColor = ""
+        b.style.color = ""
+      });
+      bouton.style.backgroundColor = "#1D6154";
+      bouton.style.color = "white";
+    })
+  })
+}
+
+//mode admin, supprime les boutons, change le login en logout,
 function suprimerBoutons(){
   const bandeau = document.querySelector(".adminEdi");
   const logout = document.querySelector(".logoutindex")
@@ -113,7 +128,7 @@ function suprimerBoutons(){
   }
 }
 
-//
+//au clique sur logout supprime le token et on passe en mode visiteur
 function deconnexion(){
   const logout = document.querySelector(".logoutindex")
 
@@ -123,7 +138,7 @@ function deconnexion(){
   })
 }
 
-//
+//affiche la modale et un filtre gris en fond de page,
 function afficheModale(){
   const overlay = document.querySelector(".overlay");
   const modale = document.querySelector(".modale");
@@ -133,7 +148,7 @@ function afficheModale(){
     overlay.style.display = "block";
     modale.style.display = "block";
   })
-
+//ferme la modale au clic sur la croix
   const fermeModale = document.querySelectorAll(".close");
   fermeModale.forEach((btn)=>{
     btn.addEventListener("click", async function(){
@@ -142,7 +157,7 @@ function afficheModale(){
       ajoutImage.style.display = "none";
   })
   })
-
+//affiche la page pour ajouter une image
   const btnAjout = document.querySelector(".btnAjout");
   btnAjout.addEventListener("click", async function(){
     modale.style.display = "none";
@@ -155,7 +170,7 @@ function afficheModale(){
   })
 }
 
-//
+//affiche la galerie dans la modale
 async function galerieModale(works){
   for(let i = 0; i < works.length ; i++){
     const projet =  works[i];
@@ -164,9 +179,7 @@ async function galerieModale(works){
     const imagesModale = document.createElement("img");
     imagesModale.classList.add = "imageModale";
     worksElement.classList.add("imageFig");
-
     imagesModale.src = projet.imageUrl;
-
 
     modaleImages.appendChild(worksElement);
     worksElement.insertAdjacentHTML(
@@ -179,10 +192,9 @@ async function galerieModale(works){
       `
     );
   }
-
 }
 
-//
+//possibilité de supprimer des images
 async function deleteWork(id) {
     const url = "http://localhost:5678/api/works/"+id;
 
@@ -205,7 +217,7 @@ async function deleteWork(id) {
     }
 }
 
-//
+//au clic sur la poubelle l'image est supprimé
 function boutonSuppression(){
   const boutonSup = document.querySelectorAll(".iconeSup");
 
@@ -221,12 +233,18 @@ function boutonSuppression(){
   })
 }
 
-//
-function listeCat(categories){
+//affiche les catégories lors de l'ajout d'une image
+async function listeCat(){
+  let selection = []
   const selectCat = document.querySelector("#categorie");
-
+  const categories = await fetch("http://localhost:5678/api/categories");
+  selection = await categories.json();
+  const optionVide = document.createElement("option");
+  optionVide.value = "";
   selectCat.innerHTML = "";
-  categories.forEach(cat => {
+  selectCat.appendChild(optionVide);
+
+  selection.forEach(cat => {
     const option = document.createElement("option");
     option.value = cat.id;
     option.textContent = cat.name;
@@ -234,7 +252,8 @@ function listeCat(categories){
   });
 
 }
-//
+
+//envoie image+titre+catégorie a l'API
 function ajoutPhoto(){
   const form = document.querySelector("#formulaireAjout");
   const nouveau = document.querySelector("#validerApi");
@@ -245,7 +264,6 @@ function ajoutPhoto(){
       nouvelleImage.append("image",document.querySelector("#photo").files[0]);
       nouvelleImage.append("title",document.querySelector("#title").value);
       nouvelleImage.append("category",document.querySelector("#categorie").value);
-
 
     try {
       const reponse = await fetch("http://localhost:5678/api/works/",{

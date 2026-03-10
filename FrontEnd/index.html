@@ -40,11 +40,19 @@
 	<section class="formAjout">
 		<h2>Ajout photo</h2>
 		<form action="#" method="post" id="formulaireAjout">
-			<input type="file" name="photo" id="photo">
+			<div class="zoneAJout">
+				<input type="file" name="photo" id="photo">
+				<i class="fa-regular fa-image logo"></i>
+				<label for="photo" class="photoCustom">+ Ajouter photo</label>
+				<p class="format">jpg, png : 4mo max</p>
+			</div>
+
 			<label for="name">Titre</label>
 			<input type="text" name="title" id="title">
 			<label for="categorie">Catégorie</label>
-			<select name="categorie" id="categorie"></select>
+			<select name="categorie" id="categorie">
+				<option value=""></option>
+			</select>
 		</form>
 	</section>
 	<div class="modaleAjout">

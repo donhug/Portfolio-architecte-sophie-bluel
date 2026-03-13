@@ -14,11 +14,11 @@ deconnexion();
 afficheModale();
 ajoutPhoto();
 listeCat()
+preview()
 //récupere les images + titres
 async function afficherWorks() {
   const reponse = await fetch("http://localhost:5678/api/works");
   works = await reponse.json();
-  console.log(works);
   genererGalerie(works);
   galerieModale(works)
 
@@ -30,7 +30,6 @@ async function afficherWorks() {
     }
   })
   const categories =Array.from(categoriesArray).map(cat => JSON.parse(cat));
-  console.log(categories);
   genererBoutons(categories);
 
 
@@ -62,11 +61,10 @@ function genererGalerie(works){
 function genererBoutons(categories){
   const buttonAll = document.createElement("button");
 
-  buttonAll.className = "btnCategories";
+  buttonAll.className = "btnCategories active";
   buttonAll.innerText = "Tous";
   divButtons.appendChild(buttonAll);
   buttonAll.addEventListener("click", function(){
-    console.log("Tous");
     document.querySelector(".gallery").innerHTML = "";
     genererGalerie(works)
   })
@@ -85,7 +83,6 @@ function genererBoutons(categories){
 //trie les images en fonction de leurs catégories
 function boutonTrie(button,category, works){
   button.addEventListener("click", function(){
-    console.log("ID => "+category.id+" /nom =>"+category.name );
     const worksTrie = works.filter(works => works.categoryId === category.id);
     worksTrie.forEach(works => console.log("(TITRE) = "+works.title + " (catégorie) = "+works.categoryId));
     document.querySelector(".gallery").innerHTML = "";
@@ -98,12 +95,9 @@ function couleurBtn(){
   let boutons = document.querySelectorAll(".btnCategories")
   boutons.forEach(function (bouton){
     bouton.addEventListener("click", function(){
-      boutons.forEach(b =>{
-        b.style.backgroundColor = ""
-        b.style.color = ""
-      });
-      bouton.style.backgroundColor = "#1D6154";
-      bouton.style.color = "white";
+      boutons.forEach(b => b.classList.remove("active"));
+        bouton.classList.remove("active");
+      bouton.classList.add("active");
     })
   })
 }
@@ -128,7 +122,7 @@ function suprimerBoutons(){
   }
 }
 
-//au clique sur logout supprime le token et on passe en mode visiteur
+//au clic sur logout supprime le token et on passe en mode visiteur
 function deconnexion(){
   const logout = document.querySelector(".logoutindex")
 
@@ -156,6 +150,12 @@ function afficheModale(){
       modale.style.display = "none";
       ajoutImage.style.display = "none";
   })
+  })
+
+  overlay.addEventListener("click", async function(){
+    overlay.style.display = "none";
+    modale.style.display = "none";
+    ajoutImage.style.display = "none";
   })
 //affiche la page pour ajouter une image
   const btnAjout = document.querySelector(".btnAjout");
@@ -226,7 +226,6 @@ function boutonSuppression(){
       const idBtnSup = Number(btn.dataset.id);
       const work = works.find((w) =>w.id === idBtnSup);
       if(work){
-        console.log("Image supprimer : ", work.title);
         await deleteWork(idBtnSup);
       }
     })
@@ -251,6 +250,34 @@ async function listeCat(){
     selectCat.appendChild(option);
   });
 
+}
+
+//affiche l'image dans la zone
+function preview(){
+  const cacher = document.querySelectorAll(".preview");
+  const drop = document.querySelector("#photo");
+  const zoneAjout = document.querySelector(".zoneAJout");
+
+  drop.addEventListener("change", e => {
+    cacher.forEach(c => {
+      c.style.display="none";
+    })
+    const preView = document.querySelector("#photo").files[0];
+    const url = URL.createObjectURL(preView);
+    const miniImg = document.createElement("img")
+    miniImg.classList.add("affiche");
+    miniImg.src = url;
+    zoneAjout.appendChild(miniImg);
+  })
+}
+
+function previewRest() {
+  const cacher = document.querySelectorAll(".preview");
+  const miniImg = document.querySelector(".affiche");
+  cacher.forEach(c => {
+    c.style.display="block";
+  })
+  miniImg.remove();
 }
 
 //envoie image+titre+catégorie a l'API
@@ -279,6 +306,7 @@ function ajoutPhoto(){
       }
       form.reset();
       await afficherWorks();
+      previewRest()
     } catch (erreur) {
       console.error(erreur.message);
     }

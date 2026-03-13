@@ -203,6 +203,16 @@ footer nav ul {
 	background-color: white;
 }
 
+.btnCategories:hover{
+	background-color: #1D6154;
+	color: white;
+	cursor: pointer;
+}
+
+.active{
+	background-color: #1D6154;
+	color: white;
+}
 /*PAGE LOGIN*/
 
 .logindex{
@@ -247,6 +257,7 @@ form{
 	width:180px;
 	height:36px;
 	text-align:center;
+	cursor: pointer;
 }
 
 .forgot{
@@ -256,18 +267,17 @@ form{
 }
 
 .faux{
-	background:red;
 	text-align:center;
-	padding:30px;
 	border-radius:20px;
-	margin-top: 30px;
 	display: none;
+	color:red;
 }
 
 /*MODE ADMIN*/
 
 .logoutindex{
 	display: none;
+	cursor: pointer;
 }
 .adminEdi{
 	display:none;
@@ -293,6 +303,7 @@ form{
 .btnModifier{
 	display: block;
 	margin-bottom:30px;
+	cursor: pointer;
 }
 
 /*modale*/
@@ -320,6 +331,7 @@ section, .galleryBox{
 	border-radius: 10px;
 	padding:20px;
 	display:none;
+	overflow-y:auto;
 }
 .modale h2 {
 	color: black;
@@ -337,6 +349,7 @@ section, .galleryBox{
 }
 .poubelle{
 	color:white;
+	cursor: pointer;
 }
 .imageFig{
 	position: relative;
@@ -344,10 +357,12 @@ section, .galleryBox{
 .modaleClose{
 	display:flex;
 	justify-content: flex-end;
+	cursor: pointer;
 }
 .close{
 	background-color:transparent;
 	border:none;
+	cursor: pointer;
 }
 
 .modaleGallery{
@@ -382,6 +397,7 @@ section, .galleryBox{
 	width:180px;
 	height:36px;
 	text-align:center;
+	cursor: pointer;
 }
 /*Page modale ajout */
 .ajoutImage{
@@ -395,9 +411,11 @@ section, .galleryBox{
 .return{
 	background-color: transparent;
 	border: none;
+	cursor: pointer;
 }
 .formAjout{
 	margin:0 auto;
+	width:420px;
 }
 #photo{
 	display: none;
@@ -413,6 +431,7 @@ section, .galleryBox{
 	cursor: pointer;
 	flex-direction: column;
 	gap:10px;
+	border-radius: 5px;
 }
 .logo{
 	font-size: 80px;
@@ -451,4 +470,9 @@ section, .galleryBox{
 	color: #444444;
 	margin-bottom: 30px;
 	padding: 10px;
+	cursor: pointer;
+}
+
+.affiche{
+	width:32%;
 }

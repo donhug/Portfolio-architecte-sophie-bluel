@@ -476,3 +476,8 @@ section, .galleryBox{
 .affiche{
 	width:32%;
 }
+
+.oublie{
+	color: red;
+	display: none;
+}

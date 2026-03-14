@@ -6,6 +6,7 @@ const modaleImages = document.querySelector(".modaleGallery");
 const divButtons = document.querySelector(".btn");
 const token = localStorage.getItem("token");
 const modifictaion = document.querySelector(".btnModifier");
+const oublie = document.querySelector(".oublie")
 
 
 afficherWorks();
@@ -144,11 +145,15 @@ function afficheModale(){
   })
 //ferme la modale au clic sur la croix
   const fermeModale = document.querySelectorAll(".close");
+  const form = document.querySelector("#formulaireAjout");
   fermeModale.forEach((btn)=>{
     btn.addEventListener("click", async function(){
       overlay.style.display = "none";
       modale.style.display = "none";
       ajoutImage.style.display = "none";
+      form.reset();
+      previewRest();
+      oublie.style.display="none"
   })
   })
 
@@ -206,7 +211,6 @@ async function deleteWork(id) {
           "Authorization": `Bearer ${token}`
         }
       });
-      console.log(works);
 
       if (!reponse.ok) {
         throw new Error(`Statut de réponse : ${reponse.status}`);
@@ -277,39 +281,52 @@ function previewRest() {
   cacher.forEach(c => {
     c.style.display="block";
   })
-  miniImg.remove();
+  if(miniImg){
+    miniImg.remove();
+  }
 }
 
 //envoie image+titre+catégorie a l'API
-function ajoutPhoto(){
+async function ajoutPhoto(){
   const form = document.querySelector("#formulaireAjout");
   const nouveau = document.querySelector("#validerApi");
+
   nouveau.addEventListener("click", async function(){
+    const image = document.querySelector("#photo").files[0]
+    const title = document.querySelector("#title")
+    const category = document.querySelector("#categorie")
 
-    //gestion de l'envoi de l'image + titre + catégorie
-    const nouvelleImage = new FormData();
-      nouvelleImage.append("image",document.querySelector("#photo").files[0]);
-      nouvelleImage.append("title",document.querySelector("#title").value);
-      nouvelleImage.append("category",document.querySelector("#categorie").value);
-
-    try {
-      const reponse = await fetch("http://localhost:5678/api/works/",{
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${token}`
-        },
-        body:nouvelleImage
-      });
-
-      if (!reponse.ok) {
-        throw new Error(`Statut de réponse : ${reponse.status}`);
-      }
-      form.reset();
-      await afficherWorks();
-      previewRest()
-    } catch (erreur) {
-      console.error(erreur.message);
+    if(!image || !title.value || !category.value){
+      oublie.style.display="block"
     }
+    else{
+      //gestion de l'envoi de l'image + titre + catégorie
+      const nouvelleImage = new FormData();
+      nouvelleImage.append("image", image);
+      nouvelleImage.append("title", title.value);
+      nouvelleImage.append("category", category.value);
+
+      try {
+        const reponse = await fetch("http://localhost:5678/api/works/",{
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${token}`
+          },
+          body:nouvelleImage
+        });
+
+        if (!reponse.ok) {
+          throw new Error(`Statut de réponse : ${reponse.status}`);
+        }
+        form.reset();
+        previewRest();
+        await afficherWorks();
+        oublie.style.display="none"
+      } catch (erreur) {
+        console.error(erreur.message);
+      }
+    }
+
   })
 }
 

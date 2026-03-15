@@ -5,29 +5,30 @@ const divImages = document.querySelector(".gallery");
 const modaleImages = document.querySelector(".modaleGallery");
 const divButtons = document.querySelector(".btn");
 const token = localStorage.getItem("token");
-const modifictaion = document.querySelector(".btnModifier");
+const modification = document.querySelector(".btnModifier");
 const oublie = document.querySelector(".oublie")
-
+const envoie = document.querySelector(".confirmation");
+const valider = document.querySelector(".btnValider");
 
 afficherWorks();
-suprimerBoutons();
+supprimerBoutons();
 deconnexion();
 afficheModale();
 ajoutPhoto();
+valiBtn()
 listeCat()
+
 preview()
 //récupere les images + titres
 async function afficherWorks() {
   const reponse = await fetch("http://localhost:5678/api/works");
   works = await reponse.json();
-  genererGalerie(works);
-  galerieModale(works)
 
 //récupere les 3 catégories
   let categoriesArray = new Set();
-  works.forEach(works => {
-    if (works.category){
-      categoriesArray.add(JSON.stringify(works.category));
+  works.forEach(work => {
+    if (work.category){
+      categoriesArray.add(JSON.stringify(work.category));
     }
   })
   const categories =Array.from(categoriesArray).map(cat => JSON.parse(cat));
@@ -97,14 +98,13 @@ function couleurBtn(){
   boutons.forEach(function (bouton){
     bouton.addEventListener("click", function(){
       boutons.forEach(b => b.classList.remove("active"));
-        bouton.classList.remove("active");
       bouton.classList.add("active");
     })
   })
 }
 
 //mode admin, supprime les boutons, change le login en logout,
-function suprimerBoutons(){
+function supprimerBoutons(){
   const bandeau = document.querySelector(".adminEdi");
   const logout = document.querySelector(".logoutindex")
   const login = document.querySelector(".logindex")
@@ -139,7 +139,7 @@ function afficheModale(){
   const modale = document.querySelector(".modale");
   const ajoutImage = document.querySelector("#ajoutImage");
 
-  modifictaion.addEventListener("click", async function(){
+  modification.addEventListener("click",  function(){
     overlay.style.display = "block";
     modale.style.display = "block";
   })
@@ -147,29 +147,30 @@ function afficheModale(){
   const fermeModale = document.querySelectorAll(".close");
   const form = document.querySelector("#formulaireAjout");
   fermeModale.forEach((btn)=>{
-    btn.addEventListener("click", async function(){
+    btn.addEventListener("click",  function(){
       overlay.style.display = "none";
       modale.style.display = "none";
       ajoutImage.style.display = "none";
       form.reset();
       previewRest();
       oublie.style.display="none"
+      envoie.style.display="none";
   })
   })
 
-  overlay.addEventListener("click", async function(){
+  overlay.addEventListener("click",  function(){
     overlay.style.display = "none";
     modale.style.display = "none";
     ajoutImage.style.display = "none";
   })
 //affiche la page pour ajouter une image
   const btnAjout = document.querySelector(".btnAjout");
-  btnAjout.addEventListener("click", async function(){
+  btnAjout.addEventListener("click",  function(){
     modale.style.display = "none";
     ajoutImage.style.display = "block";
   })
   const retour = document.querySelector(".return");
-  retour.addEventListener("click", async function(){
+  retour.addEventListener("click",  function(){
     modale.style.display = "block";
     ajoutImage.style.display = "none";
   })
@@ -181,10 +182,7 @@ async function galerieModale(works){
     const projet =  works[i];
 
     const worksElement = document.createElement("figure");
-    const imagesModale = document.createElement("img");
-    imagesModale.classList.add = "imageModale";
     worksElement.classList.add("imageFig");
-    imagesModale.src = projet.imageUrl;
 
     modaleImages.appendChild(worksElement);
     worksElement.insertAdjacentHTML(
@@ -275,6 +273,7 @@ function preview(){
   })
 }
 
+// affiche l'image dans la div
 function previewRest() {
   const cacher = document.querySelectorAll(".preview");
   const miniImg = document.querySelector(".affiche");
@@ -284,7 +283,22 @@ function previewRest() {
   if(miniImg){
     miniImg.remove();
   }
+  valider.classList.add("btnValider");
 }
+
+//change le Btn valider de couleur quand l'envoi est possible
+function valiBtn(){
+  const image = document.querySelector("#photo").files[0]
+  const title = document.querySelector("#title")
+  const category = document.querySelector("#categorie")
+
+  if(image && title.value && category.value){
+    valider.classList.remove("btnValider");
+  }
+}
+document.querySelector("#photo").addEventListener("change", valiBtn);
+document.querySelector("#title").addEventListener("change", valiBtn);
+document.querySelector("#categorie").addEventListener("change", valiBtn);
 
 //envoie image+titre+catégorie a l'API
 async function ajoutPhoto(){
@@ -314,19 +328,22 @@ async function ajoutPhoto(){
           },
           body:nouvelleImage
         });
-
+        envoie.style.display="block"
+        setTimeout(function() {
+          envoie.style.display = "none";
+          form.reset();
+          previewRest();
+        },2000);
         if (!reponse.ok) {
           throw new Error(`Statut de réponse : ${reponse.status}`);
         }
-        form.reset();
-        previewRest();
+
         await afficherWorks();
         oublie.style.display="none"
       } catch (erreur) {
         console.error(erreur.message);
       }
     }
-
   })
 }
 

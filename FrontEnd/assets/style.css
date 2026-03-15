@@ -481,3 +481,13 @@ section, .galleryBox{
 	color: red;
 	display: none;
 }
+.confirmation{
+	color: #2CB71A;
+	display: none;
+}
+
+.btnValider{
+	border: 1px solid #A7A7A7;
+	background-color: #A7A7A7;
+	color: white;
+}
